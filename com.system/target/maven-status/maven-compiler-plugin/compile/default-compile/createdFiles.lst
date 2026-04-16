@@ -1,1 +1,10 @@
+bankSystem/service/BankService.class
+bankSystem/model/Transaction.class
+bankSystem/repository/AccountRepository.class
+bankSystem/repository/TransactionRepository.class
+bankSystem/model/Account.class
+bankSystem/model/User.class
+bankSystem/model/TransactionType.class
+bankSystem/repository/UserRepository.class
 bankSystem/Application.class
+bankSystem/controller/AccountController.class
