@@ -1,19 +1,32 @@
 package bankSystem.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
+import java.util.UUID;
 
 @Entity
 public class User {
 
     @Id
-    private String id;
+    @GeneratedValue
+    private UUID id;
 
     private String name;
 
     public User() {}
 
-    public User(String id, String name) {
-        this.id = id;
+    public User(String name) {
+        this.name = name;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
     }
 }

@@ -1,25 +1,45 @@
 package bankSystem.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
 public class Account {
 
     @Id
-    private String id;
+    @GeneratedValue
+    private UUID id;
 
     private String userId;
 
-    private double balance;
+    private BigDecimal balance;
 
     public Account() {}
 
-    public Account(String id, String userId, double balance) {
-        this.id = id;
+    public Account(String userId, BigDecimal balance) {
         this.userId = userId;
+        this.balance = balance;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 }

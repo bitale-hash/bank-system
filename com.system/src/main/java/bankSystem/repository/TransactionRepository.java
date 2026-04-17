@@ -1,29 +1,17 @@
 package bankSystem.repository;
+
+import bankSystem.model.Account;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import bankSystem.model.Transaction;
-import java.util.*;
+
+import java.util.UUID;
+import java.util.List;
 
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction, String> {
-    /*
-    private final List<Transaction> transactions = new ArrayList<>();
+public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
 
-    public void save(Transaction transaction) {
-        transactions.add(transaction);
-    }
+    List<Transaction> findByAccount(Account account);
 
-    public List<Transaction> findAll() {
-        return transactions;
-    }
-
-    public List<Transaction> findByAccountId(String accountId) {
-        return transactions.stream()
-                .filter(t ->
-                        accountId.equals(t.getFromAccountId()) ||
-                        accountId.equals(t.getToAccountId())
-                )
-                .toList();
-    }
-    */
 }
