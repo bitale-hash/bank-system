@@ -18,8 +18,7 @@ public class BankService {
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
 
-    public BankService(AccountRepository accountRepository,
-                       TransactionRepository transactionRepository) {
+    public BankService(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
     }
@@ -31,9 +30,13 @@ public class BankService {
 
     @Transactional
     public void deposit(UUID accountId, BigDecimal amount) {
+        
+        
 
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        validateAmount(amount);
 
         account.setBalance(account.getBalance().add(amount));
 
@@ -48,13 +51,13 @@ public class BankService {
 
     @Transactional
     public void withdraw(UUID accountId, BigDecimal amount) {
-
+           
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
+        validateAmount(amount);
 
-        if (account.getBalance().compareTo(amount) < 0) {
-            throw new RuntimeException("Insufficient balance");
-        }
+        validateSufficientBalance(account, amount);
+         
 
         account.setBalance(account.getBalance().subtract(amount));
 
@@ -72,6 +75,8 @@ public class BankService {
         if (fromAccountId.equals(toAccountId)) {
             throw new RuntimeException("Cannot transfer to the same account");
         }
+        validateAmount(amount);
+
         //prendo gli account grazie agli id 
         Account fromAccount = accountRepository.findById(fromAccountId)
             .orElseThrow(() -> new RuntimeException("Source account not found"));
@@ -79,9 +84,7 @@ public class BankService {
             .orElseThrow(() -> new RuntimeException("Destination account not found"));
         
         //controllo che ci siano i soldi per fare il versamento
-        if (fromAccount.getBalance().compareTo(amount) < 0) {
-            throw new RuntimeException("Insufficient balance");
-        }
+        validateSufficientBalance(fromAccount, amount);
 
         fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
         Transaction withdrawTx = new Transaction(
@@ -107,4 +110,14 @@ public class BankService {
         return accountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
     }
+    private void validateAmount(BigDecimal amount){
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) 
+            throw new RuntimeException("Amount must be greater than zero");
+        
+    }
+    private void validateSufficientBalance(Account account, BigDecimal amount) {
+    if (account.getBalance().compareTo(amount) < 0) {
+        throw new RuntimeException("Insufficient balance");
+    }
+}
 }
