@@ -8,6 +8,7 @@ import bankSystem.model.Transaction;
 import bankSystem.model.TransactionType;
 import bankSystem.repository.AccountRepository;
 import bankSystem.repository.TransactionRepository;
+import bankSystem.dto.AccountResponse;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -23,9 +24,11 @@ public class BankService {
         this.transactionRepository = transactionRepository;
     }
 
-    public Account createAccount(String userId) {
+    public AccountResponse createAccount(String userId) {
         Account account = new Account(userId, BigDecimal.ZERO);
-        return accountRepository.save(account);
+        Account saved = accountRepository.save(account);
+
+        return new AccountResponse(saved.getId(), saved.getBalance());
     }
 
     @Transactional
@@ -52,8 +55,7 @@ public class BankService {
     @Transactional
     public void withdraw(UUID accountId, BigDecimal amount) {
            
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+        Account account= getAccount(accountId);
         validateAmount(amount);
 
         validateSufficientBalance(account, amount);
@@ -78,10 +80,10 @@ public class BankService {
         validateAmount(amount);
 
         //prendo gli account grazie agli id 
-        Account fromAccount = accountRepository.findById(fromAccountId)
-            .orElseThrow(() -> new RuntimeException("Source account not found"));
-        Account toAccount = accountRepository.findById(toAccountId)
-            .orElseThrow(() -> new RuntimeException("Destination account not found"));
+        
+            Account fromAccount =getAccount(fromAccountId);
+            Account toAccount =getAccount(toAccountId);
+        
         
         //controllo che ci siano i soldi per fare il versamento
         validateSufficientBalance(fromAccount, amount);
@@ -101,14 +103,17 @@ public class BankService {
                 TransactionType.DEPOSIT
         );
         transactionRepository.save(depositTx);
-
-        accountRepository.save(fromAccount);
-        accountRepository.save(toAccount);
+        //rindondanti, ci pensa @Transactional a salvare
+        //accountRepository.save(fromAccount);
+        //accountRepository.save(toAccount);
     }
 
-    public Account getAccount(UUID id) {
-        return accountRepository.findById(id)
+    public AccountResponse getAccount(UUID id) {
+
+        Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        return new AccountResponse( account.getId(), account.getBalance());
     }
     private void validateAmount(BigDecimal amount){
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) 
@@ -116,8 +121,12 @@ public class BankService {
         
     }
     private void validateSufficientBalance(Account account, BigDecimal amount) {
-    if (account.getBalance().compareTo(amount) < 0) {
-        throw new RuntimeException("Insufficient balance");
+        if (account.getBalance().compareTo(amount) < 0) 
+         throw new RuntimeException("Insufficient balance");
+    
     }
-}
+    private Account getAccount(UUID id) {
+        return accountRepository.findById(id)
+                 .orElseThrow(() -> new RuntimeException("Account not found"));
+    }
 }
