@@ -4,6 +4,7 @@ bankSystem/repository/AccountRepository.class
 bankSystem/repository/TransactionRepository.class
 bankSystem/model/Account.class
 bankSystem/model/User.class
+bankSystem/controller/TestController.class
 bankSystem/model/TransactionType.class
 bankSystem/repository/UserRepository.class
 bankSystem/Application.class

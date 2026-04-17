@@ -1,10 +1,12 @@
 package bankSystem.repository;
-
+import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import bankSystem.model.Transaction;
 import java.util.*;
 
-public class TransactionRepository {
-
+@Repository
+public interface TransactionRepository extends JpaRepository<Transaction, String> {
+    /*
     private final List<Transaction> transactions = new ArrayList<>();
 
     public void save(Transaction transaction) {
@@ -23,4 +25,5 @@ public class TransactionRepository {
                 )
                 .toList();
     }
+    */
 }

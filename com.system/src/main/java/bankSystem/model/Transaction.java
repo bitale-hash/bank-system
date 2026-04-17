@@ -1,51 +1,28 @@
 package bankSystem.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.time.LocalDateTime;
-import java.util.UUID;
+ 
 
+@Entity
 public class Transaction {
-
+    @Id
     private String id;
-
-    private String fromAccountId; // può essere null (deposito)
-    private String toAccountId;   // può essere null (prelievo)
-
+    private String accountId;
     private double amount;
-
     private LocalDateTime timestamp;
-
+    @Enumerated(EnumType.STRING)
     private TransactionType type;
 
-    public Transaction(String fromAccountId, String toAccountId, double amount, TransactionType type) {
-        this.id = UUID.randomUUID().toString();
-        this.fromAccountId = fromAccountId;
-        this.toAccountId = toAccountId;
+    public Transaction() {}
+
+    public Transaction(String id, String accountId, double amount, TransactionType type) {
+        this.id = id;
+        this.accountId = accountId;
         this.amount = amount;
         this.type = type;
         this.timestamp = LocalDateTime.now();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getFromAccountId() {
-        return fromAccountId;
-    }
-
-    public String getToAccountId() {
-        return toAccountId;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public TransactionType getType() {
-        return type;
     }
 }

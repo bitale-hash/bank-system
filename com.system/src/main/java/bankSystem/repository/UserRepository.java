@@ -1,10 +1,12 @@
 package bankSystem.repository;
-
+import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import bankSystem.model.User;
 import java.util.*;
 
-public class UserRepository {
-
+@Repository
+public interface UserRepository extends JpaRepository<User, String>  {
+    /*
     private final Map<String, User> users = new HashMap<>();
 
     public void save(User user) {
@@ -22,4 +24,5 @@ public class UserRepository {
     public void deleteById(String id) {
         users.remove(id);
     }
+    */
 }

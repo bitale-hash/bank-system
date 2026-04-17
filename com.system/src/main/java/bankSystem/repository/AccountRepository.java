@@ -1,12 +1,13 @@
 package bankSystem.repository;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import bankSystem.model.Account;
 import java.util.*;
 
 @Repository
-public class AccountRepository {
+public interface AccountRepository extends JpaRepository<Account, String> {
 
-    private final Map<String, Account> accounts = new HashMap<>();
+    /* private final Map<String, Account> accounts = new HashMap<>();
 
     public void save(Account account) {
         accounts.put(account.getId(), account);
@@ -21,5 +22,5 @@ public class AccountRepository {
                 .stream()
                 .filter(a -> a.getUserId().equals(userId))
                 .toList();
-    }
+    }*/
 }

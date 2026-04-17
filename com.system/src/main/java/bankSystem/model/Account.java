@@ -1,36 +1,25 @@
 package bankSystem.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.util.UUID;
 
+@Entity
 public class Account {
 
+    @Id
     private String id;
+
     private String userId;
+
     private double balance;
 
-    public Account(String userId) {
-        this.id = UUID.randomUUID().toString();
+    public Account() {}
+
+    public Account(String id, String userId, double balance) {
+        this.id = id;
         this.userId = userId;
-        this.balance = 0.0;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void deposit(double amount) {
-        this.balance += amount;
-    }
-
-    public void withdraw(double amount) {
-        this.balance -= amount;
+        this.balance = balance;
     }
 }

@@ -26,7 +26,8 @@ public class BankService {
     
     public void deposit(String accountId, double amount) {
 
-        Account account = accountRepository.findById(accountId);
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new RuntimeException("Account not found"));;
 
         if (account == null) 
             throw new RuntimeException("Account not found");
@@ -38,7 +39,8 @@ public class BankService {
 
     public void withdraw(String accountId, double amount) {
 
-        Account account = accountRepository.findById(accountId);
+        Account account = accountRepository.findById(accountId)
+            .orElseThrow(() -> new RuntimeException("Account not found"));;
 
         if (account == null) 
             throw new RuntimeException("Account not found");
@@ -52,6 +54,7 @@ public class BankService {
         transactionRepository.save(tx);
     }
     public Account getAccount(String id) {
-        return accountRepository.findById(id);
+        return accountRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Account not found"));
     }
 }
